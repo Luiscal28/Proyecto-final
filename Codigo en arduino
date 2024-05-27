@@ -1,0 +1,74 @@
+
+#include <SPI.h>
+#include <SD.h>
+#include <TimeLib.h>
+
+const int sensorHumedadPin = A0;
+const int sensorUltrasonicoTrigPin = 2;
+const int sensorUltrasonicoEchoPin = 3;
+const int bombaAguaPin = 4;
+const int buzzerPin = 5;
+const int ledPin = 6;
+
+const int humedadMinima = 21;
+const int humedadMaxima = 40;
+
+File datosSD;
+
+void setup() {
+  pinMode(sensorHumedadPin, INPUT);
+  pinMode(sensorUltrasonicoTrigPin, OUTPUT);
+  pinMode(sensorUltrasonicoEchoPin, INPUT);
+  pinMode(bombaAguaPin, OUTPUT);
+  pinMode(buzzerPin, OUTPUT);
+  pinMode(ledPin, OUTPUT);
+
+  Serial.begin(9600);
+  setTime(12, 0, 0, 17, 05, 2024); // 
+}
+
+void loop() {
+    int humedadSuelo = analogRead(sensorHumedadPin);
+  
+    if (humedadSuelo < humedadMinima) {
+      int distanciaAgua = medirDistanciaAgua();
+      
+      if (distanciaAgua > 3) {
+        digitalWrite(bombaAguaPin, HIGH);
+        while (humedadSuelo < humedadMaxima) {
+          humedadSuelo = analogRead(sensorHumedadPin);
+        }
+        digitalWrite(bombaAguaPin, LOW);
+        guardarDatosSD(humedadSuelo, distanciaAgua);
+      } else {
+        tone(buzzerPin, 1000);
+        delay(1000);
+        noTone(buzzerPin);
+      }
+    }
+  
+    digitalWrite(ledPin, HIGH);
+  delay(1800000); 
+}
+
+int medirDistanciaAgua() {
+  digitalWrite(sensorUltrasonicoTrigPin, LOW);
+  delayMicroseconds(2);
+  digitalWrite(sensorUltrasonicoTrigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(sensorUltrasonicoTrigPin, LOW);
+  return pulseIn(sensorUltrasonicoEchoPin, HIGH) / 58; 
+}
+
+void guardarDatosSD(int humedad, int distancia) {
+  char dataString[30];
+  sprintf(dataString, "%02d:%02d:%02d - Humedad: %d%%, Distancia: %d cm\n", hour(), minute(), second(), humedad, distancia);
+  
+  datosSD = SD.open("datos.txt", FILE_WRITE);
+  if (datosSD) {
+    datosSD.println(dataString);
+    datosSD.close();
+  } else {
+    Serial.println("Error al abrir el archivo.");
+  }
+}
