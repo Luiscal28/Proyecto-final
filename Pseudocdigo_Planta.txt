@@ -1,0 +1,65 @@
+Pseudocdigo_Planta
+Start
+
+Declare constants:
+    SENSOR_MOISTURE_PIN = A0
+    ULTRASONIC_TRIG_PIN = 2
+    ULTRASONIC_ECHO_PIN = 3
+    WATER_PUMP_PIN = 4
+    BUZZER_PIN = 5
+    LED_PIN = 6
+    MOISTURE_MIN = 21
+    MOISTURE_MAX = 40
+
+Declare variables:
+    Integer soilMoisture
+    Integer waterDistance
+    File dataSD
+
+Function setup:
+    Configure SENSOR_MOISTURE_PIN as input
+    Configure ULTRASONIC_TRIG_PIN as output
+    Configure ULTRASONIC_ECHO_PIN as input
+    Configure WATER_PUMP_PIN as output
+    Configure BUZZER_PIN as output
+    Configure LED_PIN as output
+    Initialize serial communication at 9600 baud
+    Initialize time to 12:00:00 on May 22, 2024
+
+Function loop:
+    Read soilMoisture from SENSOR_MOISTURE_PIN
+    If soilMoisture < MOISTURE_MIN then
+        waterDistance = measureWaterDistance()
+        If waterDistance > 3 then
+            Activate WATER_PUMP_PIN
+            While soilMoisture < MOISTURE_MAX
+                Read soilMoisture from SENSOR_MOISTURE_PIN
+            Deactivate WATER_PUMP_PIN
+            Call saveDataSD with soilMoisture and waterDistance
+        Else
+            Activate buzzer at 1000 Hz
+            Wait 1 second
+            Deactivate buzzer
+    Turn on LED_PIN
+    Wait 30 minutes
+
+Function measureWaterDistance:
+    Set ULTRASONIC_TRIG_PIN to LOW
+    Wait 2 microseconds
+    Set ULTRASONIC_TRIG_PIN to HIGH
+    Wait 10 microseconds
+    Set ULTRASONIC_TRIG_PIN to LOW
+    Read pulse time from ULTRASONIC_ECHO_PIN
+    Convert pulse time to distance in cm
+    Return distance
+
+Function saveDataSD(moisture, distance):
+    Format data string with current time, moisture, and distance
+    Open file "data.txt" in write mode
+    If file is open then
+        Write data string to file
+        Close file
+    Else
+        Display error message on serial console
+
+End
