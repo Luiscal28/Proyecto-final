@@ -1,0 +1,24 @@
+
+Presupuesto estimado para realizar el proyecto
+
+1. **Componentes electrónicos:**
+   - Arduino Uno: **$36000**
+   - Sensor de humedad del suelo: **$4000**
+   - Sensor ultrasónico: **$8000**
+   - Bomba de agua: **$8000**
+   - Buzzer y LED: **$10000**
+   - Tarjeta SD y lector: **$20000**
+   - Otros componentes (cables, resistencias, etc.): **$15000**
+
+2. **Herramientas y materiales:**
+   - estaño: **$15**
+   - pcb: **$9000**
+
+3. **Costos adicionales:**
+   - Tarjeta SD (opcional): **$12000**
+   - Caja o contenedor para el sistema: **$10000**
+   - Otros accesorios (como tubos, conectores, etc.): **$10000**
+
+4. **Total estimado del proyecto:**
+   - Costo total aproximado: **$150000**
+
