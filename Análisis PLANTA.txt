@@ -1,0 +1,39 @@
+Análisis PLANTA
+Análisis de el programa Arduino
+
+Problema: Controlar la humedad del suelo y medir la distancia de agua disponible utilizando sensores, activando una bomba de agua cuando la humedad del suelo es baja y registrando los datos en una tarjeta SD.
+
+Entradas:
+Sensor de humedad del suelo (valor analógico)
+Sensor ultrasónico (para medir la distancia de agua)
+
+Salidas:
+Activación de la bomba de agua
+Alarma de buzzer si no hay suficiente agua
+LED indicador
+Registro de datos en la tarjeta SD
+
+Constantes:
+Pines para los sensores y actuadores
+Valores mínimos y máximos de humedad
+
+Variables:
+Valor de humedad del suelo
+Distancia medida por el sensor ultrasónico
+Archivo de datos en la tarjeta SD
+
+Procesos:
+Configurar los pines de los sensores y actuadores.
+Inicializar la comunicación serial y el tiempo.
+Leer la humedad del suelo.
+Si la humedad es menor que el mínimo, medir la distancia de agua.
+Si la distancia es mayor que 3 cm, activar la bomba de agua hasta que la humedad alcance el máximo.
+Si la distancia es menor o igual a 3 cm, activar el buzzer.
+Guardar los datos de humedad y distancia en la tarjeta SD.
+Encender el LED indicador.
+Esperar 30 minutos antes de repetir el proceso.
+
+Restricciones:
+La humedad debe ser medida y comparada con valores definidos.
+La bomba solo se activa si hay suficiente agua disponible.
+Los datos se registran en una tarjeta SD si está disponible.
